@@ -1,4 +1,4 @@
-# Demo MPI code: Monte Carlo Pi estimation example
+# Demo MPI code: Monte Carlo &pi; estimation example
 
 This code is similar in functionality to the `pthreads` code used in the previous assignment; it performs 128M Monte Carlo trials to estimate the value of **&pi;**. The parallel implementation uses message passing as the programming model. As with the shared-memory example code, this code is provided with the accompanying Makefile. After you setup your environment to use MPI (described below), use `make` to compile the code and `make run` to launch a run with 4 processes. 
 
