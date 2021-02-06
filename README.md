@@ -1,8 +1,8 @@
 # Demo MPI code: Monte Carlo Pi estimation example
 
-This code is similar in functionality to the `pthreads` code used in the previous assignment; it performs 128M Monte Carlo trials to estimate the value of **&pi;**. The parallel implementation uses message passing as the programming model. As with the shared-memory example code, this code is provided with the accompanying Makefile. Use `make` to compile the code and `make run` to launch a run with 4 processes.
+This code is similar in functionality to the `pthreads` code used in the previous assignment; it performs 128M Monte Carlo trials to estimate the value of **&pi;**. The parallel implementation uses message passing as the programming model. As with the shared-memory example code, this code is provided with the accompanying Makefile. After you setup your environment to use MPI (described below), use `make` to compile the code and `make run` to launch a run with 4 processes. 
 
-# MPI installation
+## MPI installation
 You are welcome to download and install your own MPI implementation -- it's fairly straightforward and can be done with user permissions alone. However, one installation is made available to you at `/home/yara/mithuna2/mpich-install`. The installed version includes the MPI compiler (`mpicc`) and a utility to launch MPI programs (`mpi-exec`). To access these binaries, your environment variables must point to the relevant directories as follows.
 
 * `$PATH` must include `/opt/gcc/6.1.0/bin:/home/yara/mithuna2/mpich-install/bin`.
