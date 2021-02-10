@@ -14,7 +14,7 @@ There are a few key differences in the MPI version (as compared to the shared me
 Under `pthreads,` the operating system (OS) works under the hood to take care of scheduling the threads on multiple cores on the same machine. In contrast, MPI orchestration requires the launching of multiple threads across _different_ machines, each running its own independent OS. Effectively, the MPI runtime performs the equivalent tasks by launching parallel processes on other machines; but this requires you to take some steps to ensure that the MPI runtime _can_ launch jobs on other machines. 
 
 This entails three tasks.
-1. You use a special command `mpi-exec` to launch the binary (as opposed to directly running the binary at the command-line.)
+1. You use a special command `mpiexec` to launch the binary (as opposed to directly running the binary at the command-line.)
 2. The runtime must be given a list of machine names where the processes may be launched. This is straightforward; (1) you create a file with a list of machine names (one name per line), and (2) you pass the file name as a command-line argument when launching the MPI executable using `mpiexec`. 
 ```
 mpiexec -n <num-threads> -f <path-to-machinefile> <executable-binary>
