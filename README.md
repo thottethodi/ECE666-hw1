@@ -23,8 +23,14 @@ mpiexec -n <num-threads> -f <path-to-machinefile> <executable-binary>
 
 -------------
 ## Added on 2/10/2021
-The program `io.c` is an example that provides file I/O routines that allow saving/retrieving data to/from the filesystem. These routines will be used for grading. As such, you should use the routines without modifying the format.  
+The program `io.c` is an example that provides file I/O routines that allow saving/retrieving data to/from the filesystem. These routines will be used for grading.  
 
-The example format is a binary format that holds an arbitrary number of double-precision numbers. The same format will be used for both the integer-sort problem and the matrix-multiplication problem. 
+The example format is a binary format that holds an arbitrary number of double-precision numbers. The format will be used directly for the matrix-multiplication problem. And it can be used with minor modifications (as outlined later) for the integer-sort problem. 
+
 1. `int read_from_file(char * filename, double *data, int num-elements)` populates a buffer (pointed to by `data`) of `num-elements` double precision numbers by reading the values from file `filename`. It is important that the data be pre-allocated using malloc. 
 2. `int write_to_file(char * filename, double *data, int num-elements)` writes out the contents of a buffer (pointed to by `data`) that holds `num-elements` double precision numbers to file `filename` in binary format. 
+
+Because it is flat format (a linear sequence of numbers), any richer structure must be imposed by convention. A matrix of `NxN` dimensions is stored as flat sequence of N^2 numbers in row-major order. 
+
+### Modifications for integer sort
+The only modifications that must be made to adapt these routines for the integer-sort problem is to replace the double-precision pointers with integer pointers. (This also requires replacing all `sizeof(double)` with `sizeof(int)`.)  
