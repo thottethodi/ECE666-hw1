@@ -20,3 +20,11 @@ This entails three tasks.
 mpiexec -n <num-threads> -f <path-to-machinefile> <executable-binary>
 ```
 3. You must set-up passwordless ssh connections so that the MPI runtime can launch tasks on other machines without needing authentication for each machine. This involves SSH key generation and running an SSH agent. Please consult external resources on how to set this up. Here's one such resource to get you started: https://www.open-mpi.org/faq/?category=rsh 
+
+-------------
+## Added on 2/10/2021
+The program `io.c` is an example that provides file I/O routines that allow saving/retrieving data to/from the filesystem. These routines will be used for grading. As such, you should use the routines without modifying the format.  
+
+The example format is a binary format that holds an arbitrary number of double-precision numbers. The same format will be used for both the integer-sort problem and the matrix-multiplication problem. 
+1. `int read_from_file(char * filename, double *data, int num-elements)` populates a buffer (pointed to by `data`) of `num-elements` double precision numbers by reading the values from file `filename`. It is important that the data be pre-allocated using malloc. 
+2. `int write_to_file(char * filename, double *data, int num-elements)` writes out the contents of a buffer (pointed to by `data`) that holds `num-elements` double precision numbers to file `filename` in binary format. 
