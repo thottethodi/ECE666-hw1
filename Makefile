@@ -1,16 +1,16 @@
-all: mpi-pi io iodebug
+all: mpi-pi mm mm-debug
 
 mpi-pi: mpi-pi.c Makefile
 	mpicc -O2 mpi-pi.c -o mpi-pi
 
 run:
-	mpiexec -n 4 -f machinefile mpi-pi
+	mpiexec -n 4 -f sm.tmp mpi-pi
 
 clean: 
-	rm mpi-pi iodebug io
+	rm mpi-pi mm mm-debug
 
-iodebug: io.c
-	gcc -D DEBUG io.c -o iodebug
+mm:
+	mpicc mpi_mmwrapper.c matmul.c -o mm
 
-io:     io.c
-	gcc -o io io.c
+mm-debug:
+	mpicc -D DEBUG mpi_mmwrapper.c matmul.c -o mm-debug

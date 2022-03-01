@@ -2,13 +2,23 @@
 #include<stdlib.h>
 #include<time.h>
 
+extern void matmul(double*, double*, double*, int);
+
 #ifdef DEBUG
 #define NUM_ELEMENTS (4*4)
+#define AFILE "a.4.bin"
+#define BFILE "b.4.bin"
+#define CFILE "c.4.bin"
+#define LEADING_DIM 4
 #else
+#define AFILE "a.512.bin"
+#define BFILE "b.512.bin"
+#define CFILE "c.512.bin"
 #define NUM_ELEMENTS (512*512)
+#define LEADING_DIM 512
 #endif
 
-double *a, *b;
+double *a, *b, *c;
 
 int write_to_file(char * filename, double *data, int num) {
     FILE * fp;
@@ -51,36 +61,37 @@ main() {
    int i;
    int write_success=0;
    int read_success=0;
-   srand48(time(NULL));
    a = malloc(NUM_ELEMENTS*sizeof(double));
    b = malloc(NUM_ELEMENTS*sizeof(double));
-   for(i = 0; i<NUM_ELEMENTS; i++) {
-	*(a+i) = drand48();
+   c = malloc(NUM_ELEMENTS*sizeof(double));
 
-#ifdef DEBUG
-	printf("%6.4f\n", a[i]);
-#endif
-
-   }
-   write_success = write_to_file("a.bin",a,NUM_ELEMENTS);
-   if(write_success ==1) printf("Successfully written.\n");
-   read_success = read_from_file("a.bin",b,NUM_ELEMENTS);
+   read_success = read_from_file("a.bin", a, NUM_ELEMENTS);
    if(read_success == 1) {
-	for(i=0; i<NUM_ELEMENTS; i++) {
-	   if (b[i] != a[i]) break;
-#ifdef DEBUG
-	   printf("%6.4f\n", b[i]);
-#endif
-	}
-	if(i==NUM_ELEMENTS) {
-	  printf("integrity verified. All %d elements match.\n", NUM_ELEMENTS);
-	} else {
-	  printf("Mismatch at element %d (a[%d] = %6.4f; b[%d] = %6.4f;)\n",
-		i, i, a[i], i, b[i]);
+	read_success = read_from_file("b.bin", b, NUM_ELEMENTS);
+	if (read_success == 1) {
+	   matmul(a, b, c, LEADING_DIM);
 	}
    }
+   read_success = read_from_file("golden.bin", a, NUM_ELEMENTS);
+   if(read_success == 1) {
+        double diff = 0; 
+	for(int p=0; p<LEADING_DIM; p++) {
+	   for(int q=0; q<LEADING_DIM; q++) {
+	         diff += abs(*(c + p*LEADING_DIM + q) - *(a+p*LEADING_DIM+q));	
+	   }
+	}
+	printf("Absolute error: %e\n",diff);
+   }
+   write_success = write_to_file("c.bin", c, NUM_ELEMENTS);
+#ifdef DEBUG
+   for(i=0; i<NUM_ELEMENTS; i++) {
+	printf("Computed: %6.4f; Golden: %6.4f\n",c[i],a[i]);
+   }
+#endif
    free(a);
    free(b);
+   free(c);
+    
 }
 
 
