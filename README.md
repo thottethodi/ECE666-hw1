@@ -46,3 +46,13 @@ For any given `<size>`, copy the corresponding input files `{a,b}.<size>.bin` to
 
 ### Running the program
 After the input files have been copied to `a.bin, b.bin`, and `golden.bin`, run the binary without any command line parameters as you would run any other MPI binary. (See the instructions for &pi; example.)
+
+--------
+### CHANGELOG 3/2/2022
+Some changes and additional examples have been pushed. Here's a summary of changes. 
+1. Two new files (`outer.c` and `inner.c`) have been added to illustrate how MPI behaves. To compile them, use `make functest`. To run it, use `make testrun`. This example highlights three key functionalities. 
+    1. It shows SPMD (single program multiple data) behavior of the MPI runtime. The exact same code runs on all nodes. Even the code before `MPI_Init` and the code after `MPI_Finalize` is executed everywhere (see the pre-mpi and post-mpi printed statements). 
+    2. It shows that MPI_Init can be called from within an external function. It doesn't have to be in `main()`.
+    3. It shows how `MPI_Wtime` can be used to selectively measure time within the MPI code sections. 
+  
+2. There are other minor corrections. The matmul prototype now takes in `argc` and `argv` parameters as they're needed for `MPI_Init`.
