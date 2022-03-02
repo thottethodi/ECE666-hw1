@@ -1,5 +1,5 @@
 
-void matmul(double* a, double *b, double *c, int n) {
+void matmul(double* a, double *b, double *c, int n, int argc, char*argv[]) {
 	// Sequential code shown. SPAWN MPI PROCESSES HERE.
 	int i, j, k;
 	for(i = 0; i<n; i++) {

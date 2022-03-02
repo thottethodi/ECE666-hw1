@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 
-extern void matmul(double*, double*, double*, int);
+extern void matmul(double*, double*, double*, int, int,char*[]);
 
 #ifdef DEBUG
 #define NUM_ELEMENTS (4*4)
@@ -57,7 +57,7 @@ int read_from_file(char * filename, double *data, int num) {
     }
 } 
 
-main() {
+main(int argc, char*argv[]) {
    int i;
    int write_success=0;
    int read_success=0;
@@ -69,7 +69,7 @@ main() {
    if(read_success == 1) {
 	read_success = read_from_file("b.bin", b, NUM_ELEMENTS);
 	if (read_success == 1) {
-	   matmul(a, b, c, LEADING_DIM);
+	   matmul(a, b, c, LEADING_DIM,argc,argv);
 	}
    }
    read_success = read_from_file("golden.bin", a, NUM_ELEMENTS);
@@ -82,7 +82,7 @@ main() {
 	}
 	printf("Absolute error: %e\n",diff);
    }
-   write_success = write_to_file("c.bin", c, NUM_ELEMENTS);
+//   write_success = write_to_file("c.bin", c, NUM_ELEMENTS);
 #ifdef DEBUG
    for(i=0; i<NUM_ELEMENTS; i++) {
 	printf("Computed: %6.4f; Golden: %6.4f\n",c[i],a[i]);
