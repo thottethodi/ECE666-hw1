@@ -22,15 +22,27 @@ mpiexec -n <num-threads> -f <path-to-machinefile> <executable-binary>
 3. You must set-up passwordless ssh connections so that the MPI runtime can launch tasks on other machines without needing authentication for each machine. This involves SSH key generation and running an SSH agent. Please consult external resources on how to set this up. Here's one such resource to get you started: https://www.open-mpi.org/faq/?category=rsh 
 
 -------------
-## Added on 2/10/2021
-The program `io.c` is an example that provides file I/O routines that allow saving/retrieving data to/from the filesystem. These routines will be used for grading.  
+## Added on 3/1/2022
+The program `mpi_mmwrapper.c` and `matmul.c` is a demonstration of the wrapper code that should be linked to your parallel matrix multiplication implementation. The file provides file I/O routines that allow saving/retrieving data to/from the filesystem. These routines will be used for grading.  
 
-The example format is a binary format that holds an arbitrary number of double-precision numbers. The format will be used directly for the matrix-multiplication problem. And it can be used with minor modifications (as outlined later) for the integer-sort problem. 
+The example format is a binary format that holds an arbitrary number of double-precision numbers. The format will be used directly for the matrix-multiplication problem. 
 
 1. `int read_from_file(char * filename, double *data, int num-elements)` populates a buffer (pointed to by `data`) of `num-elements` double precision numbers by reading the values from file `filename`. It is important that the data be pre-allocated using malloc. 
 2. `int write_to_file(char * filename, double *data, int num-elements)` writes out the contents of a buffer (pointed to by `data`) that holds `num-elements` double precision numbers to file `filename` in binary format. 
 
 Because it is flat format (a linear sequence of numbers), any richer structure must be imposed by convention. A matrix of `NxN` dimensions is stored as flat sequence of N^2 numbers in row-major order. 
 
-### Modifications for integer sort
-The only modifications that must be made to adapt these routines for the integer-sort problem is to replace the double-precision pointers with integer pointers. (This also requires replacing all `sizeof(double)` with `sizeof(int)`.)  
+### Error checking
+Because double-precision arithmetic is not precise, there can be small errors arising from executing operations in a different order than the sequential implementation. The wrapper includes code to measure and report the error. If the error is small, your code does not need further debugging.
+
+### Compiling the code
+The makefile includes targets to compile the wrapper with a simple sequential implementation. Your implementation must entirely be in `matmul.c`.
+
+### Data files
+You are provided two sets of data files for testing: `{a,b,c}.{4,512}.bin` 
+The `a` and `b` files are the input matrices to be multiplied. the `c` files contain the matrix product. The two sets correspond to 4x4 and 512x512 matrix sizes respectively. Use the 4x4 set for debugging.
+
+For any given `<size>`, copy the corresponding input files `{a,b}.<size>.bin` to `{a,b}.bin`. Further, copy `c.<size>.bin` to `golden.bin`. 
+
+### Running the program
+After the input files have been copied to `a.bin, b.bin`, and `golden.bin`, run the binary without any command line parameters as you would run any other MPI binary. (See the instructions for &pi; example.)
